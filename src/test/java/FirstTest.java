@@ -6,6 +6,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -43,12 +45,12 @@ public class FirstTest
 	}
 
 	@Test
-	public void launchExampleApp() throws MalformedURLException
+	public void launchExampleApp() throws IOException
 	{
+		uploadToSauceStorage("HelloSauceAndroid.apk");
+
 		URL sauceURL = new URL(SAUCE_URL);
 		System.out.println("URL : " + sauceURL);
-
-		SauceREST api = new SauceREST(SAUCE_USERNAME, SAUCE_ACCESS_KEY);
 
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability("appiumVersion", "1.8.1");
@@ -63,8 +65,17 @@ public class FirstTest
 		AppiumDriver driver = new AndroidDriver(sauceURL, capabilities);
 		System.out.println("ACTUAL CAPABILITIES: " + driver.getCapabilities());
 
-		System.out.println(driver.getContext());
+		System.out.println("CONTEXT: " + driver.getContext());
 
 		driver.quit();
+	}
+
+	public void uploadToSauceStorage(String filename) throws IOException
+	{
+		SauceREST api = new SauceREST(SAUCE_USERNAME, SAUCE_ACCESS_KEY);
+		ClassLoader loader = this.getClass().getClassLoader();
+		File localApk = new File(loader.getResource("HelloSauceAndroid.apk").getFile());
+		String uploadResponse = api.uploadFile(localApk);
+		System.out.println("UPLOADED FILE MD5: " + uploadResponse);
 	}
 }

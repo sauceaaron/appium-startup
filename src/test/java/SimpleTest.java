@@ -3,6 +3,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -63,13 +64,17 @@ public class SimpleTest
 		capabilities.setCapability("name", "open native app on android emulator");
 		System.out.println("DESIRED CAPABILITIES: " + capabilities);
 
-		AppiumDriver driver = new AndroidDriver(sauceURL, capabilities);
+		AppiumDriver<MobileElement> driver = new AndroidDriver<>(sauceURL, capabilities);
 		System.out.println("ACTUAL CAPABILITIES: " + driver.getCapabilities());
 
 		System.out.println("CONTEXT: " + driver.getContext());
 
-		MobileElement titleBar = (MobileElement) driver.findElementById("com.saucelabs.hellosauceandroid:id/action_bar_container");
+		MobileElement titleBar = driver.findElement(By.id("com.saucelabs.hellosauceandroid:id/action_bar"))
+				.findElement(By.xpath("//android.widget.TextView"));
 		System.out.println("TITLE: " + titleBar.getText());
+
+		MobileElement heading = driver.findElement(By.id("com.saucelabs.hellosauceandroid:id/message"));
+		System.out.println("MESSAGE: " + heading.getText());
 
 		driver.quit();
 	}

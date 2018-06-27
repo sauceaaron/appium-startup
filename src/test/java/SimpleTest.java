@@ -1,5 +1,6 @@
 import com.saucelabs.saucerest.SauceREST;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.Test;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class FirstTest
+public class SimpleTest
 {
 	public static String SAUCE_USERNAME = System.getenv("SAUCE_USERNAME");
 	public static String SAUCE_ACCESS_KEY = System.getenv("SAUCE_ACCESS_KEY");
@@ -39,7 +40,7 @@ public class FirstTest
 		System.out.println("ACTUAL CAPABILITIES: " + driver.getCapabilities());
 
 		driver.get("https://saucelabs.com");
-		System.out.println("title: " + driver.getTitle());
+		System.out.println("TITLE: " + driver.getTitle());
 
 		driver.quit();
 	}
@@ -66,6 +67,9 @@ public class FirstTest
 		System.out.println("ACTUAL CAPABILITIES: " + driver.getCapabilities());
 
 		System.out.println("CONTEXT: " + driver.getContext());
+
+		MobileElement titleBar = (MobileElement) driver.findElementById("com.saucelabs.hellosauceandroid:id/action_bar_container");
+		System.out.println("TITLE: " + titleBar.getText());
 
 		driver.quit();
 	}
